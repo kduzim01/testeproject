@@ -1,12 +1,11 @@
-🏫 Sistema Escolar — Autenticação, Controle de Acesso e Instalação Completa
+🏫 Sistema Escolar — Autenticação, Controle de Acesso e Gestão de Notas
 
 Este documento combina o guia técnico de autenticação e controle de acesso com o passo a passo completo de instalação e estrutura do sistema.
 O objetivo é que qualquer desenvolvedor ou avaliador consiga instalar, executar e compreender toda a lógica do Sistema Escolar em PHP.
 
 📘 Descrição do Projeto
 
-O Sistema Escolar é uma aplicação desenvolvida em PHP com autenticação segura, controle de sessões, proteção de páginas internas e perfis de usuário.
-Ele implementa mensagens claras de erro/sucesso e organiza o código de forma modular, utilizando PDO, prepared statements e boas práticas de segurança.
+O Sistema Escolar é uma aplicação desenvolvida em PHP com autenticação segura, controle de sessões, proteção de páginas internas e perfis de usuário. O sistema expandiu suas funcionalidades para incluir o Gerenciamento de Notas por parte de Administradores/Professores e a Visualização de Rendimento por parte dos Alunos.
 
 A aplicação foi projetada para rodar localmente com XAMPP, utilizando o MySQL como banco de dados.
 
@@ -35,23 +34,126 @@ Conexão via PDO com prepared statements para segurança.
 Arquivo de referência: app/banco.sql (inclui criação da tabela e usuário de teste).
 
 Estrutura mínima da tabela usuarios
-Campo	Tipo	Comentário
-id	INT (PK, AI)	Identificador único
-tipo	ENUM	Admin, Professor, Aluno
-nome	VARCHAR(255)	Nome completo
-cpf	VARCHAR	CPF do usuário
-matricula	VARCHAR	Matrícula institucional
-email	VARCHAR	E-mail do usuário
-nome_pai	VARCHAR	Nome do pai
-nome_mae	VARCHAR	Nome da mãe
-data_nascim	VARCHAR	Data de nascimento
-senha_hash	VARCHAR	Senha hasheada (password_hash)
+
+Campo
+
+Tipo
+
+Comentário
+
+id
+
+INT (PK, AI)
+
+Identificador único
+
+tipo
+
+ENUM
+
+Admin, Professor, Aluno
+
+nome
+
+VARCHAR(255)
+
+Nome completo
+
+cpf
+
+VARCHAR
+
+CPF do usuário
+
+matricula
+
+VARCHAR
+
+Matrícula institucional
+
+email
+
+VARCHAR
+
+E-mail do usuário
+
+nome_pai
+
+VARCHAR
+
+Nome do pai
+
+nome_mae
+
+VARCHAR
+
+Nome da mãe
+
+data_nascim
+
+VARCHAR
+
+Data de nascimento
+
+senha_hash
+
+VARCHAR
+
+Senha hasheada (password_hash)
+
+Estrutura da tabela notas (Para API e Aplicação Web)
+
+Campo
+
+Tipo
+
+Comentário
+
+id
+
+INT (PK, AI)
+
+Identificador único
+
+aluno_id
+
+INT (FK)
+
+Chave estrangeira para usuarios.id
+
+nota_final
+
+DECIMAL(5,2)
+
+Valor da nota (média final)
+
+status
+
+VARCHAR(50)
+
+Situação (Ex: Aprovado, Reprovado)
+
+data_registro
+
+DATETIME
+
+Data e hora do registro
 
 O arquivo banco.sql cria essa estrutura e insere um usuário de teste.
 
 👤 Usuário de Teste
-Matrícula	Senha	Perfil
-231-000655	123456@abcdef	Admin
+
+Matrícula
+
+Senha
+
+Perfil
+
+231-000655
+
+123456@abcdef
+
+Admin
 
 A senha foi criada com complexidade mínima exigida (letras, números e símbolo).
 
@@ -60,241 +162,229 @@ A senha foi criada com complexidade mínima exigida (letras, números e símbolo
 Ao clonar o repositório, os arquivos estarão organizados da seguinte forma:
 
 Projeto_teste2/
-├──api/
-│ ├── AuthController.php
-│ ├── NotasController.php
-│ ├── Response.php
-│ ├── config.php
-│ └── index.php
 ├── app/
-│   └── banco.sql
+│   └── banco.sql
+├── api/
+│   ├── config.php        
+│   ├── index.php         
+│   ├── Auth.php          
+│   ├── Response.php      
+│   ├── AuthController.php
+│   ├── AlunoController.php
+│   └── NotasController.php 
 ├── assets/
-│   ├── css/
-│   │   └── style.css
-│   └── js/
-│       ├── index_script.js
-│       ├── cadastro_script.js
-│       └── dashboard_admin_script.js
-├── public/
-│   ├── autentica.php
-│   ├── conexao.php
-│   ├── dashboard.php
-│   ├── dashboard_aluno.php
-│   ├── dashboard_professor.php
-│   ├── cadastro_usuarios.php
-│   ├── cadastro_sucesso.php
-│   ├── processa_cadastro.php
-│   ├── verifica_sessao.php
-│   ├── sem_permissao.php
-│   ├── logout.php
-├── index.php
-└── README.md
+│   ├── css/
+│   │   └── style.css
+│   └── js/
+│       ├── index_script.js
+│       ├── cadastro_script.js
+│       └── dashboard_admin_script.js
+└── public/           # Componente de Aplicação Web Tradicional (Sessão)
+   ├── autentica.php
+   ├── conexao.php
+   ├── dashboard.php
+   ├── dashboard_aluno.php
+   ├── dashboard_professor.php
+   ├── cadastro_usuarios.php
+   ├── cadastro_sucesso.php
+   ├── processa_cadastro.php
+   ├── verifica_sessao.php
+   ├── sem_permissao.php
+   ├── logout.php
+   ├── listar_alunos.php
+   ├── cadastrar_nota.php
+   ├── processa_cadastrar_nota.php
+   ├── editar_nota.php
+   ├── processa_editar_nota.php
+   ├── ver_notas_aluno.php
+   └── notas_meu_rendimento.php
+
+
+
+
+
+
+
+
+
+Atenção: A arquitetura atual utiliza o arquivo index.php na raiz do projeto como o ponto de entrada principal para o Componente API REST. A aplicação web tradicional é acessada via public/ (ex: http://localhost/Projeto_teste2/public/).
 
 🧭 Instalação Passo a Passo
-1️⃣ Clonar o Repositório
 
-Abra o Git Bash ou terminal dentro da pasta do XAMPP (htdocs):
+(Passos 1 a 3 omitidos por serem idênticos à versão anterior)
 
-cd C:\xampp\htdocs
-git clone https://github.com/seu-usuario/seu-repositorio.git Projeto_teste2
+4️⃣ Executar o Sistema (Componente Web)
 
+Para acessar a Aplicação Web Tradicional (Interface), inicie o sistema pelo caminho:
 
-Substitua seu-usuario/seu-repositorio pela URL real do seu repositório GitHub.
-
-2️⃣ Importar o Banco de Dados
-
-Inicie Apache e MySQL pelo painel do XAMPP.
-
-Acesse: http://localhost/phpmyadmin
-
-Crie um banco chamado escola.
-
-Vá em Importar → Selecione app/banco.sql → Executar.
-
-3️⃣ Configurar Conexão
-
-Abra public/conexao.php e confira os parâmetros:
-
-<?php
-$host = 'localhost';
-$db   = 'escola';
-$user = 'root';
-$pass = '';
-$charset = 'utf8mb4';
-
-$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
-$options = [
-    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-];
-
-try {
-    $pdo = new PDO($dsn, $user, $pass, $options);
-} catch (PDOException $e) {
-    die("Erro na conexão: " . $e->getMessage());
-}
-?>
-
-4️⃣ Executar o Sistema
-
-No navegador, acesse:
-
-http://localhost/Projeto_teste2/index.php
+http://localhost/Projeto_teste2/public/
 
 
-Faça login com as credenciais de teste.
+Você será redirecionado para a tela de login.
 
 🧠 Estrutura e Funcionalidades dos Arquivos
-🔹 index.php
 
-Página inicial de login.
+🔹 index.php (Roteador Principal da API REST)
 
-Campos de matrícula ou CPF e senha.
+Ponto de entrada da API.
 
-Exibe mensagens de erro/sucesso.
+Define o cabeçalho Content-Type: application/json.
 
-Inclui validações via index_script.js.
+Inclui todos os arquivos de configuração e classes.
 
-Contém botão visual “Esqueceu sua senha?” (não funcional ainda).
+Faz o roteamento manual baseado no parâmetro $_GET['rota'] (Ex: index.php?rota=login).
 
-🔹 index_script.js
+Encaminha a requisição para o Controller e método apropriado.
 
-Validação de campos e feedbacks em tempo real.
+🔹 Auth.php
 
-Habilita botão “Entrar” apenas se os campos forem válidos.
+Contém a lógica de verificação de sessão e extração de dados do usuário autenticado.
 
-Função para mostrar/ocultar senha.
+🔹 Response.php
 
-🔹 autentica.php
+Classe estática para padronizar as respostas da API em formato JSON (status, message, data).
 
-Recebe dados via POST.
+🔹 AuthController.php
 
-Sanitiza e valida.
+Implementa as rotas de login da API. Ainda possui a vulnerabilidade de não usar password_verify para autenticação.
 
-Consulta banco com PDO e prepared statements.
+🔹 AlunoController.php
 
-Usa password_verify para autenticação segura.
+Implementa as rotas para listar todos os alunos (/alunos) e buscar detalhes de um aluno específico (/alunos/{id}).
 
-Cria sessão e redireciona para o dashboard correspondente ao perfil.
+🔹 NotasController.php
 
-Implementa contador de tentativas e bloqueio após 5 erros.
+Implementa a rota para listar todas as notas cadastradas no sistema (/notas).
 
-🔹 verifica_sessao.php
+🔹 Arquivos do Componente Web (public/)
 
-Protege páginas internas.
+Mantêm as funcionalidades de autenticação, proteção de rotas e controle de sessão descritas na documentação anterior.
 
-Verifica se $_SESSION['usuario'] existe.
+🗺️ Rotas da Aplicação Web Tradicional (Componente /public/)
 
-Redireciona para index.php se a sessão estiver expirada.
+Caminho (/public/...)
 
-Impede acesso de perfis não permitidos (sem_permissao.php).
+Perfil de Acesso
 
-🔹 dashboard.php
+Funcionalidade Principal
 
-Dashboard do administrador.
+(Raiz)
 
-Exibe mensagem de boas-vindas e botões de acesso.
+Público
 
-Inclui verifica_sessao.php para segurança.
+Tela de Login
 
-Usa dashboard_admin_script.js para validações.
+dashboard.php
 
-🔹 dashboard_aluno.php / dashboard_professor.php
+Administrador
 
-Versões simplificadas para alunos e professores.
+Página principal, acesso a cadastro/listas
 
-Contêm estrutura básica com links de navegação e logout.
+dashboard_aluno.php
 
-Serão expandidas em entregas futuras.
+Aluno
 
-🔹 logout.php
+Página principal do aluno
 
-Finaliza sessão com session_unset() e session_destroy().
+dashboard_professor.php
 
-Redireciona para index.php.
+Professor
 
-🔹 sem_permissao.php
+Página principal do professor
 
-Página exibida ao tentar acessar conteúdo não autorizado.
+listar_alunos.php
 
-Mensagem clara e estilizada de “Acesso Negado”.
+Admin / Professor
 
-🔹 cadastro_usuarios.php / processa_cadastro.php
+Lista de alunos e links de ação (notas)
 
-Permitem cadastrar novos usuários.
+cadastrar_nota.php
 
-Armazenam senha com password_hash.
+Admin / Professor
 
-Exibem confirmação via cadastro_sucesso.php.
+Formulário para registrar média final
+
+ver_notas_aluno.php
+
+Admin / Professor
+
+Visualiza notas de um aluno específico
+
+notas_meu_rendimento.php
+
+Aluno
+
+Visualiza o próprio histórico de notas
+
+logout.php
+
+Todos
+
+Encerra a sessão
+
+🗺️ Rotas da API REST (Acessíveis via index.php)
+
+Rota (index.php?rota=...)
+
+Método HTTP
+
+Controller/Método
+
+Descrição
+
+login
+
+POST
+
+AuthController::login()
+
+Autentica um usuário. Espera JSON com matricula e senha.
+
+alunos
+
+GET
+
+AlunoController::listar()
+
+Lista todos os alunos cadastrados no sistema.
+
+notas
+
+GET
+
+NotasController::listar()
+
+Lista todas as notas.
+
+/alunos/{id}
+
+(GET)
+
+AlunoController::detalhes($id)
+
+Busca detalhes de um aluno, incluindo suas notas. (Requer implementação de rota paramétrica no roteador index.php)
 
 🔒 Segurança e Boas Práticas
 
-Senha com hash: password_hash e password_verify.
+🔴 ALERTA DE VULNERABILIDADE NA API REST (REFORÇO)
 
-Sessão segura: session_regenerate_id(true) após login.
+O arquivo AuthController.php da API REST não utiliza a função password_verify(), comparando a senha diretamente com a senha do banco, o que anula o uso do senha_hash.
 
-SQL seguro: consultas com PDO e prepared statements.
+Correção Urgente Necessária: O código deve ser alterado para buscar o usuário pela matrícula e, em seguida, usar o password_verify($senha_enviada, $senha_hash_do_banco) para validar.
 
-Timeout de sessão: configurado em verifica_sessao.php (padrão: 10 minutos).
+⚠️ ALERTA DE INCONSISTÊNCIA NO COMPONENTE WEB
 
-Tentativas limitadas de login: impede brute-force.
+Os arquivos public/editar_nota.php e public/processa_editar_nota.php estão desatualizados e tentam manipular campos (disciplina, nota) que não existem na tabela notas (que usa nota_final e status). Eles devem ser corrigidos ou removidos.
 
-Mensagens de erro limpas: não revelam detalhes sensíveis.
-
-Filtros de entrada e saída: sanitização e escaping.
-
-🔁 Fluxo de Autenticação
-
-Usuário acessa index.php e preenche credenciais.
-
-autentica.php valida login e senha:
-
-✅ Se válidos → cria sessão → redireciona ao dashboard correto.
-
-❌ Se inválidos → exibe erro e soma tentativa.
-
-verifica_sessao.php protege todas as páginas internas.
-
-Acesso negado → sem_permissao.php.
-
-Logout → logout.php limpa sessão e retorna ao login.
-
-📋 Observações para Professores
-
-Professores podem logar via matrícula ou CPF.
-
-O sistema identifica automaticamente o perfil e redireciona.
-
-Caso o perfil não tenha permissão → sem_permissao.php.
-
-Perfis futuros (coordenador, secretaria, etc.) podem ser adicionados facilmente via ENUM.
-
-🧩 Problemas Comuns & Soluções
-Problema	Solução
-Página em branco / erro 500	Habilite display_errors=On no php.ini
-Banco não conecta	Verifique conexao.php, MySQL ativo e credenciais corretas
-CSS não carrega	Confirme o caminho relativo assets/css/style.css
-Sessão expira rápido	Ajuste $timeout em verifica_sessao.php
-Login não funciona	Verifique hash no banco e campos matricula/senha
 💡 Boas Práticas Extras
 
-Mantenha banco.sql atualizado.
+Mantenha app/banco.sql atualizado.
 
 Adicione .gitignore para excluir arquivos sensíveis.
 
 Crie backups periódicos do banco.
 
 Documente novas funções diretamente no README ou Wiki do projeto.
-
-🤝 Como Contribuir
-
-Faça um fork do projeto.
-
-Crie uma nova branch: git checkout -b feature/nova-funcionalidade.
-
-Realize commits descritivos.
-
-Envie um Pull Request com resumo das alterações.
 
 📜 Licença
 
@@ -305,146 +395,4 @@ Adicione o arquivo LICENSE se desejar formalizar.
 📬 Contato e Suporte
 
 Para dúvidas, suporte técnico ou aprimoramentos, entre em contato pelo repositório GitHub ou envie mensagem com o título:
-"Suporte Sistema Escolar - Autenticação"
-
-📖 Nota final: Este projeto está em fase inicial. As telas de alunos, professores e administradores são versões básicas que serão evoluídas em futuras entregas, conforme novos módulos forem implementados (relatórios, notas, permissões e cadastros avançados).
-
-📡 Documentação da API (Auth, Notas, Response, Config, Roteamento)
-
-A seguir está a documentação completa da API contida na pasta api/, adicionada sem alterar nenhuma parte anterior do README.
-
-📁 Estrutura da API
-api/
- ├── AuthController.php
- ├── NotasController.php
- ├── Response.php
- ├── config.php
- └── index.php
-
-⚙️ 1. config.php — Configurações da API
-
-Contém:
-
-Credenciais de login fixas (exemplo: admin / 1234)
-
-Configurações gerais
-
-Array retornado para os controladores
-
-Exemplo:
-
-return [
-    'auth' => [
-        'username' => 'admin',
-        'password' => '1234'
-    ]
-];
-
-📤 2. Response.php — Padronização de Respostas
-
-Classe responsável por enviar respostas JSON.
-
-Métodos principais:
-Método	Descrição
-json($data, $status)	Envia JSON com código de status
-success($msg, $data)	Resposta de sucesso
-error($msg, $status)	Resposta de erro
-
-Formato padrão:
-
-{
-  "success": true,
-  "message": "Descrição",
-  "data": { ... }
-}
-
-🔐 3. AuthController.php — Login
-
-Endpoint para autenticação básica.
-
-POST /auth/login
-Corpo da requisição:
-{
-  "username": "admin",
-  "password": "1234"
-}
-
-Resposta — Sucesso:
-{
-  "success": true,
-  "message": "Autenticado com sucesso",
-  "data": {
-    "token": "token_fake_123"
-  }
-}
-
-Resposta — Erro:
-{
-  "success": false,
-  "message": "Credenciais inválidas"
-}
-
-📝 4. NotasController.php — Cálculo de Notas
-
-Calcula média de 0 a 10 e retorna aprovado/reprovado.
-
-POST /notas/calcular
-Requisição:
-{
-  "nome": "Carlos",
-  "matricula": "2024001",
-  "nota1": 8,
-  "nota2": 7
-}
-
-Regra:
-média ≥ 6 → aprovado
-média < 6 → reprovado
-
-Resposta:
-{
-  "success": true,
-  "message": "Cálculo realizado",
-  "data": {
-    "nome": "Carlos",
-    "matricula": "2024001",
-    "nota1": 8,
-    "nota2": 7,
-    "media": 7.5,
-    "resultado": "Aprovado"
-  }
-}
-
-🌐 5. index.php — Roteamento da API
-
-O router identifica:
-
-Método HTTP
-
-Caminho solicitado
-
-Controller
-
-Método do controller
-
-Rotas disponíveis:
-Método	Endpoint	Controller → Método
-POST	/auth/login	AuthController → login()
-POST	/notas/calcular	NotasController → calcular()
-
-Fluxo:
-
-Lê URL
-
-Lê JSON do php://input
-
-Chama o controller correspondente
-
-Retorna resposta JSON padronizada
-
-📘 Exemplos de Uso da API
-🔹 Login
-POST http://localhost/api/auth/login
-
-🔹 Calcular Notas
-POST http://localhost/api/notas/calcular
+"Suporte Sistema Escolar - Gestão de Notas"> 📖 **Nota final:** Este projeto está em fase inicial. As telas de alunos, professores e administradores são versões básicas que serão evoluídas em futuras entregas, conforme novos módulos forem implementados (relatórios, notas, permissões e cadastros avançados).
