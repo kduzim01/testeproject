@@ -295,29 +295,48 @@ Saída:
 
 ## 🧩 Problemas Comuns & Soluções
 
-*(Mantido conforme original)*
+| Problema                    | Solução                                                     |
+| --------------------------- | ----------------------------------------------------------- |
+| Página em branco / erro 500 | Habilite `display_errors=On` no `php.ini`                   |
+| Banco não conecta           | Verifique `conexao.php`, MySQL ativo e credenciais corretas |
+| CSS não carrega             | Confirme o caminho relativo `assets/css/style.css`          |
+| Sessão expira rápido        | Ajuste `$timeout` em `verifica_sessao.php`                  |
+| Login não funciona          | Verifique hash no banco e campos `matricula`/`senha`        |
 
 ---
 
 ## 💡 Boas Práticas Extras
 
-*(Mantido conforme original)*
+* Mantenha `banco.sql` atualizado.
+* Adicione `.gitignore` para excluir arquivos sensíveis.
+* Crie backups periódicos do banco.
+* Documente novas funções diretamente no README ou Wiki do projeto.
 
 ---
 
 ## 🤝 Como Contribuir
 
-*(Mantido conforme original)*
+1. Faça um fork do projeto.
+2. Crie uma nova branch: `git checkout -b feature/nova-funcionalidade`.
+3. Realize commits descritivos.
+4. Envie um Pull Request com resumo das alterações.
 
 ---
 
 ## 📜 Licença
 
-*(Mantido conforme original)*
+Projeto aberto para uso acadêmico e aprendizado.
+Pode ser distribuído sob a licença **MIT** (recomendado).
+Adicione o arquivo `LICENSE` se desejar formalizar.
 
 ---
 
 ## 📬 Contato e Suporte
 
-*(Mantido conforme original)
+Para dúvidas, suporte técnico ou aprimoramentos, entre em contato pelo repositório GitHub ou envie mensagem com o título:
+**"Suporte Sistema Escolar - Autenticação"**
+
+---
+
+> 📖 **Nota final:** Este projeto está em fase inicial. As telas de alunos, professores e administradores são versões básicas que serão evoluídas em futuras entregas, conforme novos módulos forem implementados (relatórios, notas, permissões e cadastros avançados).
 
