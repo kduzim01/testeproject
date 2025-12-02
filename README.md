@@ -1,72 +1,71 @@
-# 🏫 Sistema Escolar — Autenticação, Controle de Acesso e Instalação Completa
+🏫 Sistema Escolar — Autenticação, Controle de Acesso e Instalação Completa
 
-Este documento combina **o guia técnico de autenticação e controle de acesso** com **o passo a passo completo de instalação e estrutura do sistema**.
-O objetivo é que qualquer desenvolvedor ou avaliador consiga instalar, executar e compreender toda a lógica do **Sistema Escolar em PHP**.
+Este documento combina o guia técnico de autenticação e controle de acesso com o passo a passo completo de instalação e estrutura do sistema.
+O objetivo é que qualquer desenvolvedor ou avaliador consiga instalar, executar e compreender toda a lógica do Sistema Escolar em PHP.
 
----
+📘 Descrição do Projeto
 
-## 📘 Descrição do Projeto
+O Sistema Escolar é uma aplicação desenvolvida em PHP com autenticação segura, controle de sessões, proteção de páginas internas e perfis de usuário.
+Ele implementa mensagens claras de erro/sucesso e organiza o código de forma modular, utilizando PDO, prepared statements e boas práticas de segurança.
 
-O **Sistema Escolar** é uma aplicação desenvolvida em PHP com autenticação segura, controle de sessões, proteção de páginas internas e perfis de usuário.
-Ele implementa mensagens claras de erro/sucesso e organiza o código de forma modular, utilizando **PDO**, **prepared statements** e boas práticas de segurança.
+A aplicação foi projetada para rodar localmente com XAMPP, utilizando o MySQL como banco de dados.
 
-A aplicação foi projetada para rodar localmente com **XAMPP**, utilizando o **MySQL** como banco de dados.
+⚙️ Requisitos
 
----
+PHP 7.4 ou superior
 
-## ⚙️ Requisitos
+XAMPP (Apache e MySQL ativos)
 
-* PHP 7.4 ou superior
-* XAMPP (Apache e MySQL ativos)
-* PhpMyAdmin
-* Extensão PDO habilitada
-* Navegador moderno (Chrome, Firefox, Edge, etc.)
-* Editor de código (ex.: VS Code)
+PhpMyAdmin
 
----
+Extensão PDO habilitada
 
-## 🗄️ Banco de Dados
+Navegador moderno (Chrome, Firefox, Edge, etc.)
 
-* Banco: **escola**
-* Sistema de gerenciamento: **MySQL (via localhost/phpmyadmin)**
-* Conexão via **PDO** com **prepared statements** para segurança.
-* Arquivo de referência: `app/banco.sql` (inclui criação da tabela e usuário de teste).
+Editor de código (ex.: VS Code)
 
-### Estrutura mínima da tabela `usuarios`
+🗄️ Banco de Dados
 
-| Campo       | Tipo         | Comentário                       |
-| ----------- | ------------ | -------------------------------- |
-| id          | INT (PK, AI) | Identificador único              |
-| tipo        | ENUM         | Admin, Professor, Aluno          |
-| nome        | VARCHAR(255) | Nome completo                    |
-| cpf         | VARCHAR      | CPF do usuário                   |
-| matricula   | VARCHAR      | Matrícula institucional          |
-| email       | VARCHAR      | E-mail do usuário                |
-| nome_pai    | VARCHAR      | Nome do pai                      |
-| nome_mae    | VARCHAR      | Nome da mãe                      |
-| data_nascim | VARCHAR      | Data de nascimento               |
-| senha_hash  | VARCHAR      | Senha hasheada (`password_hash`) |
+Banco: escola
 
-> O arquivo `banco.sql` cria essa estrutura e insere um usuário de teste.
+Sistema de gerenciamento: MySQL (via localhost/phpmyadmin)
 
----
+Conexão via PDO com prepared statements para segurança.
 
-## 👤 Usuário de Teste
+Arquivo de referência: app/banco.sql (inclui criação da tabela e usuário de teste).
 
-| Matrícula  | Senha         | Perfil |
-| ---------- | ------------- | ------ |
-| 231-000655 | 123456@abcdef | Admin  |
+Estrutura mínima da tabela usuarios
+Campo	Tipo	Comentário
+id	INT (PK, AI)	Identificador único
+tipo	ENUM	Admin, Professor, Aluno
+nome	VARCHAR(255)	Nome completo
+cpf	VARCHAR	CPF do usuário
+matricula	VARCHAR	Matrícula institucional
+email	VARCHAR	E-mail do usuário
+nome_pai	VARCHAR	Nome do pai
+nome_mae	VARCHAR	Nome da mãe
+data_nascim	VARCHAR	Data de nascimento
+senha_hash	VARCHAR	Senha hasheada (password_hash)
 
-> A senha foi criada com complexidade mínima exigida (letras, números e símbolo).
+O arquivo banco.sql cria essa estrutura e insere um usuário de teste.
 
----
+👤 Usuário de Teste
+Matrícula	Senha	Perfil
+231-000655	123456@abcdef	Admin
 
-## 🧩 Estrutura do Projeto
+A senha foi criada com complexidade mínima exigida (letras, números e símbolo).
+
+🧩 Estrutura do Projeto
 
 Ao clonar o repositório, os arquivos estarão organizados da seguinte forma:
 
-```
 Projeto_teste2/
+├──api/
+│ ├── AuthController.php
+│ ├── NotasController.php
+│ ├── Response.php
+│ ├── config.php
+│ └── index.php
 ├── app/
 │   └── banco.sql
 ├── assets/
@@ -90,39 +89,32 @@ Projeto_teste2/
 │   ├── logout.php
 ├── index.php
 └── README.md
-```
 
----
+🧭 Instalação Passo a Passo
+1️⃣ Clonar o Repositório
 
-## 🧭 Instalação Passo a Passo
+Abra o Git Bash ou terminal dentro da pasta do XAMPP (htdocs):
 
-### 1️⃣ Clonar o Repositório
-
-Abra o **Git Bash** ou terminal dentro da pasta do XAMPP (`htdocs`):
-
-```bash
 cd C:\xampp\htdocs
 git clone https://github.com/seu-usuario/seu-repositorio.git Projeto_teste2
-```
 
-> Substitua `seu-usuario/seu-repositorio` pela URL real do seu repositório GitHub.
 
----
+Substitua seu-usuario/seu-repositorio pela URL real do seu repositório GitHub.
 
-### 2️⃣ Importar o Banco de Dados
+2️⃣ Importar o Banco de Dados
 
-1. Inicie **Apache** e **MySQL** pelo painel do XAMPP.
-2. Acesse: [http://localhost/phpmyadmin](http://localhost/phpmyadmin)
-3. Crie um banco chamado **escola**.
-4. Vá em *Importar* → Selecione `app/banco.sql` → *Executar*.
+Inicie Apache e MySQL pelo painel do XAMPP.
 
----
+Acesse: http://localhost/phpmyadmin
 
-### 3️⃣ Configurar Conexão
+Crie um banco chamado escola.
 
-Abra `public/conexao.php` e confira os parâmetros:
+Vá em Importar → Selecione app/banco.sql → Executar.
 
-```php
+3️⃣ Configurar Conexão
+
+Abra public/conexao.php e confira os parâmetros:
+
 <?php
 $host = 'localhost';
 $db   = 'escola';
@@ -142,162 +134,317 @@ try {
     die("Erro na conexão: " . $e->getMessage());
 }
 ?>
-```
 
----
-
-### 4️⃣ Executar o Sistema
+4️⃣ Executar o Sistema
 
 No navegador, acesse:
 
-```
 http://localhost/Projeto_teste2/index.php
-```
+
 
 Faça login com as credenciais de teste.
 
----
+🧠 Estrutura e Funcionalidades dos Arquivos
+🔹 index.php
 
-## 🧠 Estrutura e Funcionalidades dos Arquivos
+Página inicial de login.
 
-### 🔹 `index.php`
+Campos de matrícula ou CPF e senha.
 
-* Página inicial de login.
-* Campos de **matrícula ou CPF** e **senha**.
-* Exibe mensagens de erro/sucesso.
-* Inclui validações via `index_script.js`.
-* Contém botão visual “Esqueceu sua senha?” (não funcional ainda).
+Exibe mensagens de erro/sucesso.
 
-### 🔹 `index_script.js`
+Inclui validações via index_script.js.
 
-* Validação de campos e feedbacks em tempo real.
-* Habilita botão “Entrar” apenas se os campos forem válidos.
-* Função para mostrar/ocultar senha.
+Contém botão visual “Esqueceu sua senha?” (não funcional ainda).
 
-### 🔹 `autentica.php`
+🔹 index_script.js
 
-* Recebe dados via `POST`.
-* Sanitiza e valida.
-* Consulta banco com `PDO` e prepared statements.
-* Usa `password_verify` para autenticação segura.
-* Cria sessão e redireciona para o dashboard correspondente ao perfil.
-* Implementa contador de tentativas e bloqueio após 5 erros.
+Validação de campos e feedbacks em tempo real.
 
-### 🔹 `verifica_sessao.php`
+Habilita botão “Entrar” apenas se os campos forem válidos.
 
-* Protege páginas internas.
-* Verifica se `$_SESSION['usuario']` existe.
-* Redireciona para `index.php` se a sessão estiver expirada.
-* Impede acesso de perfis não permitidos (`sem_permissao.php`).
+Função para mostrar/ocultar senha.
 
-### 🔹 `dashboard.php`
+🔹 autentica.php
 
-* Dashboard do administrador.
-* Exibe mensagem de boas-vindas e botões de acesso.
-* Inclui `verifica_sessao.php` para segurança.
-* Usa `dashboard_admin_script.js` para validações.
+Recebe dados via POST.
 
-### 🔹 `dashboard_aluno.php` / `dashboard_professor.php`
+Sanitiza e valida.
 
-* Versões simplificadas para alunos e professores.
-* Contêm estrutura básica com links de navegação e logout.
-* Serão expandidas em entregas futuras.
+Consulta banco com PDO e prepared statements.
 
-### 🔹 `logout.php`
+Usa password_verify para autenticação segura.
 
-* Finaliza sessão com `session_unset()` e `session_destroy()`.
-* Redireciona para `index.php`.
+Cria sessão e redireciona para o dashboard correspondente ao perfil.
 
-### 🔹 `sem_permissao.php`
+Implementa contador de tentativas e bloqueio após 5 erros.
 
-* Página exibida ao tentar acessar conteúdo não autorizado.
-* Mensagem clara e estilizada de “Acesso Negado”.
+🔹 verifica_sessao.php
 
-### 🔹 `cadastro_usuarios.php` / `processa_cadastro.php`
+Protege páginas internas.
 
-* Permitem cadastrar novos usuários.
-* Armazenam senha com `password_hash`.
-* Exibem confirmação via `cadastro_sucesso.php`.
+Verifica se $_SESSION['usuario'] existe.
 
----
+Redireciona para index.php se a sessão estiver expirada.
 
-## 🔒 Segurança e Boas Práticas
+Impede acesso de perfis não permitidos (sem_permissao.php).
 
-* **Senha com hash:** `password_hash` e `password_verify`.
-* **Sessão segura:** `session_regenerate_id(true)` após login.
-* **SQL seguro:** consultas com `PDO` e `prepared statements`.
-* **Timeout de sessão:** configurado em `verifica_sessao.php` (padrão: 10 minutos).
-* **Tentativas limitadas de login:** impede brute-force.
-* **Mensagens de erro limpas:** não revelam detalhes sensíveis.
-* **Filtros de entrada e saída:** sanitização e escaping.
+🔹 dashboard.php
 
----
+Dashboard do administrador.
 
-## 🔁 Fluxo de Autenticação
+Exibe mensagem de boas-vindas e botões de acesso.
 
-1. Usuário acessa `index.php` e preenche credenciais.
-2. `autentica.php` valida login e senha:
+Inclui verifica_sessao.php para segurança.
 
-   * ✅ Se válidos → cria sessão → redireciona ao dashboard correto.
-   * ❌ Se inválidos → exibe erro e soma tentativa.
-3. `verifica_sessao.php` protege todas as páginas internas.
-4. Acesso negado → `sem_permissao.php`.
-5. Logout → `logout.php` limpa sessão e retorna ao login.
+Usa dashboard_admin_script.js para validações.
 
----
+🔹 dashboard_aluno.php / dashboard_professor.php
 
-## 📋 Observações para Professores
+Versões simplificadas para alunos e professores.
 
-* Professores podem logar via **matrícula** ou **CPF**.
-* O sistema identifica automaticamente o perfil e redireciona.
-* Caso o perfil não tenha permissão → `sem_permissao.php`.
-* Perfis futuros (coordenador, secretaria, etc.) podem ser adicionados facilmente via ENUM.
+Contêm estrutura básica com links de navegação e logout.
 
----
+Serão expandidas em entregas futuras.
 
-## 🧩 Problemas Comuns & Soluções
+🔹 logout.php
 
-| Problema                    | Solução                                                     |
-| --------------------------- | ----------------------------------------------------------- |
-| Página em branco / erro 500 | Habilite `display_errors=On` no `php.ini`                   |
-| Banco não conecta           | Verifique `conexao.php`, MySQL ativo e credenciais corretas |
-| CSS não carrega             | Confirme o caminho relativo `assets/css/style.css`          |
-| Sessão expira rápido        | Ajuste `$timeout` em `verifica_sessao.php`                  |
-| Login não funciona          | Verifique hash no banco e campos `matricula`/`senha`        |
+Finaliza sessão com session_unset() e session_destroy().
 
----
+Redireciona para index.php.
 
-## 💡 Boas Práticas Extras
+🔹 sem_permissao.php
 
-* Mantenha `banco.sql` atualizado.
-* Adicione `.gitignore` para excluir arquivos sensíveis.
-* Crie backups periódicos do banco.
-* Documente novas funções diretamente no README ou Wiki do projeto.
+Página exibida ao tentar acessar conteúdo não autorizado.
 
----
+Mensagem clara e estilizada de “Acesso Negado”.
 
-## 🤝 Como Contribuir
+🔹 cadastro_usuarios.php / processa_cadastro.php
 
-1. Faça um fork do projeto.
-2. Crie uma nova branch: `git checkout -b feature/nova-funcionalidade`.
-3. Realize commits descritivos.
-4. Envie um Pull Request com resumo das alterações.
+Permitem cadastrar novos usuários.
 
----
+Armazenam senha com password_hash.
 
-## 📜 Licença
+Exibem confirmação via cadastro_sucesso.php.
+
+🔒 Segurança e Boas Práticas
+
+Senha com hash: password_hash e password_verify.
+
+Sessão segura: session_regenerate_id(true) após login.
+
+SQL seguro: consultas com PDO e prepared statements.
+
+Timeout de sessão: configurado em verifica_sessao.php (padrão: 10 minutos).
+
+Tentativas limitadas de login: impede brute-force.
+
+Mensagens de erro limpas: não revelam detalhes sensíveis.
+
+Filtros de entrada e saída: sanitização e escaping.
+
+🔁 Fluxo de Autenticação
+
+Usuário acessa index.php e preenche credenciais.
+
+autentica.php valida login e senha:
+
+✅ Se válidos → cria sessão → redireciona ao dashboard correto.
+
+❌ Se inválidos → exibe erro e soma tentativa.
+
+verifica_sessao.php protege todas as páginas internas.
+
+Acesso negado → sem_permissao.php.
+
+Logout → logout.php limpa sessão e retorna ao login.
+
+📋 Observações para Professores
+
+Professores podem logar via matrícula ou CPF.
+
+O sistema identifica automaticamente o perfil e redireciona.
+
+Caso o perfil não tenha permissão → sem_permissao.php.
+
+Perfis futuros (coordenador, secretaria, etc.) podem ser adicionados facilmente via ENUM.
+
+🧩 Problemas Comuns & Soluções
+Problema	Solução
+Página em branco / erro 500	Habilite display_errors=On no php.ini
+Banco não conecta	Verifique conexao.php, MySQL ativo e credenciais corretas
+CSS não carrega	Confirme o caminho relativo assets/css/style.css
+Sessão expira rápido	Ajuste $timeout em verifica_sessao.php
+Login não funciona	Verifique hash no banco e campos matricula/senha
+💡 Boas Práticas Extras
+
+Mantenha banco.sql atualizado.
+
+Adicione .gitignore para excluir arquivos sensíveis.
+
+Crie backups periódicos do banco.
+
+Documente novas funções diretamente no README ou Wiki do projeto.
+
+🤝 Como Contribuir
+
+Faça um fork do projeto.
+
+Crie uma nova branch: git checkout -b feature/nova-funcionalidade.
+
+Realize commits descritivos.
+
+Envie um Pull Request com resumo das alterações.
+
+📜 Licença
 
 Projeto aberto para uso acadêmico e aprendizado.
-Pode ser distribuído sob a licença **MIT** (recomendado).
-Adicione o arquivo `LICENSE` se desejar formalizar.
+Pode ser distribuído sob a licença MIT (recomendado).
+Adicione o arquivo LICENSE se desejar formalizar.
 
----
-
-## 📬 Contato e Suporte
+📬 Contato e Suporte
 
 Para dúvidas, suporte técnico ou aprimoramentos, entre em contato pelo repositório GitHub ou envie mensagem com o título:
-**"Suporte Sistema Escolar - Autenticação"**
+"Suporte Sistema Escolar - Autenticação"
 
----
+📖 Nota final: Este projeto está em fase inicial. As telas de alunos, professores e administradores são versões básicas que serão evoluídas em futuras entregas, conforme novos módulos forem implementados (relatórios, notas, permissões e cadastros avançados).
 
-> 📖 **Nota final:** Este projeto está em fase inicial. As telas de alunos, professores e administradores são versões básicas que serão evoluídas em futuras entregas, conforme novos módulos forem implementados (relatórios, notas, permissões e cadastros avançados).
+📡 Documentação da API (Auth, Notas, Response, Config, Roteamento)
+
+A seguir está a documentação completa da API contida na pasta api/, adicionada sem alterar nenhuma parte anterior do README.
+
+📁 Estrutura da API
+api/
+ ├── AuthController.php
+ ├── NotasController.php
+ ├── Response.php
+ ├── config.php
+ └── index.php
+
+⚙️ 1. config.php — Configurações da API
+
+Contém:
+
+Credenciais de login fixas (exemplo: admin / 1234)
+
+Configurações gerais
+
+Array retornado para os controladores
+
+Exemplo:
+
+return [
+    'auth' => [
+        'username' => 'admin',
+        'password' => '1234'
+    ]
+];
+
+📤 2. Response.php — Padronização de Respostas
+
+Classe responsável por enviar respostas JSON.
+
+Métodos principais:
+Método	Descrição
+json($data, $status)	Envia JSON com código de status
+success($msg, $data)	Resposta de sucesso
+error($msg, $status)	Resposta de erro
+
+Formato padrão:
+
+{
+  "success": true,
+  "message": "Descrição",
+  "data": { ... }
+}
+
+🔐 3. AuthController.php — Login
+
+Endpoint para autenticação básica.
+
+POST /auth/login
+Corpo da requisição:
+{
+  "username": "admin",
+  "password": "1234"
+}
+
+Resposta — Sucesso:
+{
+  "success": true,
+  "message": "Autenticado com sucesso",
+  "data": {
+    "token": "token_fake_123"
+  }
+}
+
+Resposta — Erro:
+{
+  "success": false,
+  "message": "Credenciais inválidas"
+}
+
+📝 4. NotasController.php — Cálculo de Notas
+
+Calcula média de 0 a 10 e retorna aprovado/reprovado.
+
+POST /notas/calcular
+Requisição:
+{
+  "nome": "Carlos",
+  "matricula": "2024001",
+  "nota1": 8,
+  "nota2": 7
+}
+
+Regra:
+média ≥ 6 → aprovado
+média < 6 → reprovado
+
+Resposta:
+{
+  "success": true,
+  "message": "Cálculo realizado",
+  "data": {
+    "nome": "Carlos",
+    "matricula": "2024001",
+    "nota1": 8,
+    "nota2": 7,
+    "media": 7.5,
+    "resultado": "Aprovado"
+  }
+}
+
+🌐 5. index.php — Roteamento da API
+
+O router identifica:
+
+Método HTTP
+
+Caminho solicitado
+
+Controller
+
+Método do controller
+
+Rotas disponíveis:
+Método	Endpoint	Controller → Método
+POST	/auth/login	AuthController → login()
+POST	/notas/calcular	NotasController → calcular()
+
+Fluxo:
+
+Lê URL
+
+Lê JSON do php://input
+
+Chama o controller correspondente
+
+Retorna resposta JSON padronizada
+
+📘 Exemplos de Uso da API
+🔹 Login
+POST http://localhost/api/auth/login
+
+🔹 Calcular Notas
+POST http://localhost/api/notas/calcular
